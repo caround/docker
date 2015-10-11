@@ -1,0 +1,46 @@
+#!/bin/bash
+
+build() {
+local image=$1
+local version=$2
+echo "Building $image:$version"
+docker build -t $NAMESPACE/$image:$version $ROOT_DIR/$image/$version 
+}
+
+build_image() {
+local images=$@
+for image in $images; do 
+  for version in $ROOT_DIR/$image/*; do
+    build $image `basename $version`
+  done
+done
+}
+
+# Script starts here
+
+ROOT_DIR=$(cd $(dirname $(which $0)); pwd)
+NAMESPACE='adaphi'
+DEFAULT_IMAGES="java zookeeper kafka"
+
+while getopts "h" opt; do
+  case $opt in
+    h)
+      echo "$USAGE"
+      exit 0
+      ;;
+    \?)
+      echo "$USAGE"
+      exit 0
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+IMAGES=$@
+
+if [ -z $IMAGES ]; then
+  build_image $DEFAULT_IMAGES
+else
+  build_image $IMAGES
+fi
+
