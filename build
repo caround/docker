@@ -1,4 +1,13 @@
 #!/bin/bash
+USAGE="Usage: $(basename $0) [-h] [IMAGES]
+
+-h  - show this usage
+
+Build docker image in this directory. IMAGES is a space separate list of image name.
+Current supported images: java, zookeeper and kafka. All java, zookeeper and kafka docker image
+will be built, if IMAGES is empty.
+
+"
 
 build() {
 local image=$1
