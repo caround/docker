@@ -24,6 +24,8 @@ COPY entrypoint.sh /entrypoint.sh
 
 VOLUME ["$KAFKA_LOG_DIR"]
 
+EXPOSE 9092
+
 WORKDIR $KAFKA_HOME
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["kafka-server-start.sh", "config/server.properties"]
